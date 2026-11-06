@@ -247,18 +247,29 @@ footer{
     <div id="xpFill"></div>
   </div>
 
-  <p>🏆 Rookie Explorer</p>
+  <p>🏆 Rookie Explorer</p>p>
   </section>
   <section id="game">
-    <h2>MISSION 01 — FIRST SIGNAL</h2>
-    <p>
-      A mysterious code appears on the screen:<br>
-      <strong>2, 4, 8, 16, ?</strong><br><br>
-      Find the next number to unlock the door.
-    </p>
-    <input id="code" type="number" placeholder="Enter your answer">
-    <button id="check" onclick="checkAnswer()">UNLOCK DOOR</button>
+  <h2>🌌 MISSION CONTROL</h2>
+  <p>Select your mission and enter the unknown.</p>
+
+  <div id="missionStats">
+    <span>MISSIONS: 50</span>
+    <span>UNLOCKED: <b id="unlockedCount">1</b></span>
+  </div>
+
+  <div id="missionGrid"></div>
+
+  <div id="missionPlay" style="display:none">
+    <h2 id="missionTitle"></h2>
+    <p id="missionQuestion"></p>
+    <input id="code" type="text" placeholder="Enter your answer">
+    <button id="check" onclick="checkAnswer()">SUBMIT ANSWER</button>
     <p id="message"></p>
+    <button onclick="showMissions()" style="margin-top:15px;padding:12px;border-radius:8px">
+      ← BACK TO MISSIONS
+    </button>
+  </div>
   </section>
 </main>
 
