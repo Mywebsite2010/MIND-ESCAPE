@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIND ESCAPE | The Lost Signal</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  min-height:100vh;
+  background:#050713;
+  color:white;
+  font-family:Arial,sans-serif;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+  radial-gradient(circle at 20% 20%,#152b68 0,transparent 35%),
+  radial-gradient(circle at 85% 75%,#42105e 0,transparent 35%);
+  z-index:-1;
+}
+header{
+  padding:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #26345b;
+}
+.logo{
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#72eaff;
+}
+.status{
+  font-size:11px;
+  color:#62ffb2;
+  border:1px solid #246c59;
+  padding:8px 12px;
+  border-radius:20px;
+}
+main{
+  max-width:700px;
+  margin:auto;
+  padding:55px 22px;
+  text-align:center;
+}
+.portal{
+  width:180px;
+  height:180px;
+  margin:10px auto 35px;
+  border-radius:50%;
+  border:3px solid #60dfff;
+  box-shadow:0 0 20px #00cfff,0 0 65px #6d31ff,inset 0 0 35px #4d37ff;
+  animation:pulse 3s infinite alternate;
+  display:grid;
+  place-items:center;
+  font-size:65px;
+}
+@keyframes pulse{
+  from{transform:scale(.95);box-shadow:0 0 15px #00cfff}
+  to{transform:scale(1.06);box-shadow:0 0 50px #8b5cf6}
+}
+.tag{
+  color:#72eaff;
+  letter-spacing:4px;
+  font-size:11px;
+  margin-bottom:18px;
+}
+h1{
+  font-size:clamp(38px,10vw,66px);
+  line-height:1.05;
+  letter-spacing:3px;
+  text-shadow:0 0 25px #694dff;
+}
+h1 span{color:#70eaff}
+.subtitle{
+  color:#aab4d0;
+  line-height:1.7;
+  margin:20px auto 30px;
+  max-width:420px;
+}
+button{
+  border:0;
+  cursor:pointer;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+.start{
+  padding:17px 36px;
+  border-radius:10px;
+  color:#06101c;
+  background:linear-gradient(90deg,#5be9ff,#a18aff);
+  box-shadow:0 0 25px #398cff80;
+  font-size:14px;
+}
+.start:active{transform:scale(.96)}
+.info{
+  margin-top:35px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.info div{
+  background:#101a32c9;
+  border:1px solid #263b69;
+  border-radius:13px;
+  padding:17px 5px;
+}
+.info strong{display:block;color:#75eaff;font-size:20px}
+.info small{color:#929fbd;font-size:10px}
+#game{
+  display:none;
+  margin-top:35px;
+  background:#101a32;
+  border:1px solid #354c80;
+  border-radius:16px;
+  padding:24px 16px;
+}
+#game h2{color:#70eaff;margin-bottom:15px}
+#game p{color:#c4cee8;line-height:1.6}
+#code{
+  margin:20px 0;
+  width:100%;
+  padding:15px;
+  background:#060b19;
+  color:white;
+  border:1px solid #526eac;
+  border-radius:9px;
+  font-size:18px;
+  text-align:center;
+}
+#check{
+  padding:14px 24px;
+  background:#72eaff;
+  border-radius:8px;
+  color:#07111e;
+}
+#message{margin-top:15px;color:#ffb86b}
+footer{
+  text-align:center;
+  color:#64718e;
+  font-size:11px;
+  padding:25px;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">MIND ESCAPE</div>
+  <div class="status">● SYSTEM ONLINE</div>
+</header>
+
+<main>
+  <div class="portal">⌘</div>
+  <div class="tag">AN UNKNOWN SIGNAL HAS ARRIVED</div>
+  <h1>THE LOST<br><span>SIGNAL</span></h1>
+  <p class="subtitle">
+    You are trapped in an unknown dimension.
+    Decode the secrets. Solve the mysteries.
+    Find your way out.
+  </p>
+
+  <button class="start" onclick="startGame()">START MISSION →</button>
+
+  <div class="info">
+    <div><strong>10</strong><small>MISSIONS</small></div>
+    <div><strong>∞</strong><small>MYSTERIES</small></div>
+    <div><strong>01</strong><small>PLAYER</small></div>
+  </div>
+
+  <section id="game">
+    <h2>MISSION 01 — FIRST SIGNAL</h2>
+    <p>
+      A mysterious code appears on the screen:<br>
+      <strong>2, 4, 8, 16, ?</strong><br><br>
+      Find the next number to unlock the door.
+    </p>
+    <input id="code" type="number" placeholder="Enter your answer">
+    <button id="check" onclick="checkAnswer()">UNLOCK DOOR</button>
+    <p id="message"></p>
+  </section>
+</main>
+
+<footer>© 2026 MIND ESCAPE · THE JOURNEY BEGINS</footer>
+
+<script>
+function startGame(){
+  document.getElementById("game").style.display="block";
+  document.getElementById("game").scrollIntoView({behavior:"smooth"});
+}
+function checkAnswer(){
+  const answer=document.getElementById("code").value;
+  const message=document.getElementById("message");
+  if(answer==="32"){
+    message.textContent="ACCESS GRANTED! MISSION 01 COMPLETED.";
+    message.style.color="#62ffb2";
+    localStorage.setItem("mindEscapeMission1","completed");
+  }else{
+    message.textContent="ACCESS DENIED. TRY AGAIN!";
+    message.style.color="#ff7c9b";
+  }
+}
+</script>
+</body>
+  </html>
