@@ -276,29 +276,148 @@ footer{
 <footer>© 2026 MIND ESCAPE · THE JOURNEY BEGINS</footer>
 
 <script>
+const missions = [
+["First Signal","2, 4, 8, 16, ?","32"],
+["Hidden Number","5, 10, 15, 20, ?","25"],
+["The Odd One","Which number is odd? 2, 4, 7, 8","7"],
+["Binary Door","What is 1 + 1 in binary?","10"],
+["Secret Math","12 × 12 = ?","144"],
+["Code Breaker","100 - 37 = ?","63"],
+["The Pattern","1, 4, 9, 16, ?","25"],
+["Lost Key","What is half of 250?","125"],
+["Logic Gate","If 3 cats catch 3 mice in 3 minutes, how many cats catch 9 mice in 3 minutes?","9"],
+["Final Signal","7 × 8 - 6 = ?","50"],
+["Lab Entry","Atomic number of Carbon?","6"],
+["Chemical Code","H2O has how many hydrogen atoms?","2"],
+["Gravity Test","How many sides does a hexagon have?","6"],
+["Power Core","5 squared = ?","25"],
+["Time Lock","How many minutes in 2 hours?","120"],
+["Dark Formula","Square root of 81?","9"],
+["Secret Circuit","How many bits are in one byte?","8"],
+["The Frequency","What is 100 divided by 4?","25"],
+["Lab Mystery","What is the next prime after 7?","11"],
+["Core Access","15 + 27 = ?","42"],
+["Ancient Door","Roman numeral X means?","10"],
+["Stone Pattern","3, 6, 12, 24, ?","48"],
+["Temple Code","How many degrees in a triangle?","180"],
+["Hidden Symbol","What is 9 × 9?","81"],
+["Old Secret","Square root of 144?","12"],
+["Lost Scroll","How many days in a leap year?","366"],
+["Magic Number","What is 13 + 29?","42"],
+["Crystal Gate","What is 2 to the power 5?","32"],
+["Secret Temple","How many months have 28 days?","12"],
+["Ancient Master","What is 1000 - 375?","625"],
+["Cyber Entry","What is 64 divided by 8?","8"],
+["Digital Lock","Binary 101 equals decimal?","5"],
+["Firewall","What is 17 × 3?","51"],
+["Code Tunnel","What is 144 divided by 12?","12"],
+["System Error","Next number: 2, 3, 5, 8, 12, ?","17"],
+["Data Core","How many letters in COMPUTER?","8"],
+["Network Gate","What is 15% of 200?","30"],
+["Cyber Master","What is 11 × 11?","121"],
+["Quantum Lock","What is 256 divided by 16?","16"],
+["Final Firewall","What is 19 + 23 + 8?","50"],
+["Dimension One","What is 7 cubed?","343"],
+["Time Paradox","How many seconds in 5 minutes?","300"],
+["Quantum Code","What is 1/4 of 100?","25"],
+["Reality Test","Next prime after 19?","23"],
+["Space Lock","What is 15 squared?","225"],
+["Dimension X","What is 999 + 1?","1000"],
+["Final Mystery","What is 144 + 256?","400"],
+["Master Key","What is 20% of 450?","90"],
+["Last Dimension","What is 2 to the power 10?","1024"],
+["The Lost Signal","What is 625 square root?","25"]
+];
+
+let currentMission = 0;
+
+function getCompleted(){
+  return JSON.parse(localStorage.getItem("mx_completed") || "[]");
+}
+
 function startGame(){
-  document.getElementById("game").style.display="block";
+  document.getElementById("game").style.display = "block";
+  showMissions();
   document.getElementById("game").scrollIntoView({behavior:"smooth"});
 }
+
+function showMissions(){
+  document.getElementById("missionPlay").style.display = "none";
+  document.getElementById("missionGrid").style.display = "grid";
+
+  const completed = getCompleted();
+  const unlocked = Math.min(50, completed.length + 1);
+
+  document.getElementById("unlockedCount").textContent = unlocked;
+
+  document.getElementById("missionGrid").innerHTML =
+    missions.map((m,i)=>{
+      const done = completed.includes(i);
+      const open = i < unlocked;
+
+      return `
+        <button
+          onclick="${open ? `openMission(${i})` : ''}"
+          style="
+          padding:16px 8px;
+          border-radius:12px;
+          border:1px solid ${done ? '#35dca0' : open ? '#5c72d9' : '#34394d'};
+          background:${done ? '#103c35' : open ? '#182449' : '#101322'};
+          color:white;
+          opacity:${open ? 1 : .5};
+          ">
+          ${done ? '✓' : open ? '▶' : '🔒'}<br>
+          <small>MISSION ${i+1}</small>
+        </button>
+      `;
+    }).join("");
+}
+
+function openMission(index){
+  const completed = getCompleted();
+  const unlocked = Math.min(50,completed.length+1);
+
+  if(index >= unlocked) return;
+
+  currentMission = index;
+
+  document.getElementById("missionGrid").style.display = "none";
+  document.getElementById("missionPlay").style.display = "block";
+  document.getElementById("missionTitle").textContent =
+    "MISSION " + (index+1) + " — " + missions[index][0];
+
+  document.getElementById("missionQuestion").textContent =
+    missions[index][1];
+
+  document.getElementById("code").value = "";
+  document.getElementById("message").textContent = "";
+}
+
 function checkAnswer(){
-  const answer = document.getElementById("code").value;
+  const answer = document.getElementById("code").value.trim().toLowerCase();
+  const correct = missions[currentMission][2].toLowerCase();
   const message = document.getElementById("message");
 
-  if(answer === "32"){
-    message.textContent = "ACCESS GRANTED! MISSION 01 COMPLETED.";
-    message.style.color = "#62ffb2";
+  if(answer === correct){
+    let completed = getCompleted();
 
-    if(localStorage.getItem("mindEscapeMission1") !== "completed"){
-      localStorage.setItem("mindEscapeMission1","completed");
+    if(!completed.includes(currentMission)){
+      completed.push(currentMission);
+      localStorage.setItem("mx_completed",JSON.stringify(completed));
       awardXP(50);
     }
 
+    message.textContent = "ACCESS GRANTED! +50 XP";
+    message.style.color = "#62ffb2";
+
+    setTimeout(showMissions,1200);
   }else{
-    message.textContent = "ACCESS DENIED. TRY AGAIN!";
+    message.textContent = "ACCESS DENIED! TRY AGAIN.";
     message.style.color = "#ff7c9b";
   }
-  }
-  function updatePlayer(){
+}
+
+function updatePlayer(){
   const xp = Number(localStorage.getItem("mindEscapeXP") || 0);
   const level = Math.floor(xp / 100) + 1;
   const progress = xp % 100;
@@ -321,6 +440,7 @@ function awardXP(amount){
 }
 
 updatePlayer();
+  
 </script>
 </body>
   </html>
